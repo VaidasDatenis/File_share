@@ -1,8 +1,3 @@
-<?php
-
-
-
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,7 +23,7 @@
 			  </div>
 			</div>
 
-			<form method="POST" enctype="multipart/file-data" action="upload.php">
+			<form method="POST" enctype="multipart/form-data" action="upload.php">
 				<input class="form-control-file" type="file" name="file">
 				<button class="form-control" type="submit">Upload!</button>
 			</form>
