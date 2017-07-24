@@ -1,22 +1,11 @@
 <?php
-include 'Classes/db.php';
-define("SITEURL", "//localhost/VaidasD/File_share/");
+	include 'Classes/db.php';
+	define("SITEURL", "//localhost/VaidasD/File_share/");
+	$result = DB::query("SELECT * FROM files WHERE crypt = '" . $_GET['crypt'] . "'")[0];
 
-$file_name = explode(".", $_FILES['file']['name']);
 
-$encoded_file_name = md5($file_name[0]);
-$target_file = "Files/" . $encoded_file_name . "." . $file_name[1];
-
-move_uploaded_file($_FILES["file"]["tmp_name"], $target_file);
-
-$crypt = md5($file_name[0] . rand(1, 100000));
-
-$db = new DB();
-$db->store("INSERT INTO files (original_file_name, encoded_file_name, file_size, crypt) 
-		VALUES ('" . $_FILES["file"]["name"] . "' ,'" . $encoded_file_name . "." . $file_name[1] . "','" . $_FILES["file"]["size"] ."', '" . $crypt . "')");
 
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,15 +26,15 @@ $db->store("INSERT INTO files (original_file_name, encoded_file_name, file_size,
 		<div class="col-md-6 offset-md-3">
 			<div class="jumbotron jumbotron-fluid">
 			  <div class="container">
-			    <h1 class="display-3">File share!</h1>
-			    <p class="lead">Here you can share your files!.</p>
+			    <h2>Your file has been downloaded! <?= $result->original_file_name; ?></h2>
+					<p>Your file: <?= $result->original_file_name; ?></p>
+					<p>File size: <?= $result->file_size; ?></p>
+					<p>Uploaded at  <?= $result->Upload_time; ?></p>
+					<p>File link: <a download class="btn btn-primary" downlaod href="<?= SITEURL; ?>files/=<?= $result->encoded_file_name; ?>">Download</a></p>
 			  </div>
 			</div>
 
-			<h2>Your file has been uploaded!</h2>
-			<p>File name: <?php echo $_FILES['file']['name']; ?></p>
-			<p>File size: <?= $_FILES['file']['size']; ?></p>
-			<p>File link: <a href="<?= SITEURL; ?>download.php?crypt=<?= $crypt; ?>">Link!</a></p>
+
 		</div>
 	</div>
 </div>
